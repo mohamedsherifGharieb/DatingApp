@@ -5,9 +5,25 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "https://localhost:5001;",
+      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "iisSettings": {
+    "iisExpress": {
+      "sslPort": 5001
+    }
+  },
+  "Kestrel": {
+    "Endpoints": {
+      "Https": {
+        "Url": "https://localhost:5001",
+        "Certificate": {
+          "Path": "..\\client\\ssl\\localhost.pfx", 
+          "Password": "" 
+        }
       }
     }
   }
