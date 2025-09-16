@@ -4,6 +4,7 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { Nav } from "../layout/nav/nav";
 import { AccountService } from '../core/services/account-service';
 import { Home } from "../features/home/home";
+import { User } from '../Types/user';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class App implements OnInit{
   private accountService = inject(AccountService);
   private http = inject(HttpClient);
   protected readonly title = 'Dating App';
-  protected members= signal<any>([]); 
+  protected members= signal<User[]>([]); 
 
   async ngOnInit(): Promise<void> {
     this.members.set(await this.getMembers());
@@ -30,7 +31,7 @@ export class App implements OnInit{
 
   async getMembers(){
     try {
-      return lastValueFrom(this.http.get('https://localhost:5001/api/members'));
+      return lastValueFrom(this.http.get<User[]>('https://localhost:5001/api/members'));
       }
     catch(error){
       console.log(error);

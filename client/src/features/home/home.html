@@ -10,7 +10,7 @@
             <h1 class="text-5xl font-bold">Find Your Match</h1>
             <p class="py-6">Come On in ...... all you need to is Sign up</p>
             <div class="flex items-center gap-4">
-                <button (click) = "showRegisterMode()" class="btn btn-primary btn-lg">Register </button>
+                <button (click)="showRegisterMode(true)" class="btn btn-primary btn-lg">Register </button>
                 <button class="btn btn-info btn-lg">Learn More</button>
             </div>
         </div>
@@ -18,7 +18,9 @@
     }
     @else {
         <div class ="w-full text-2xl text-center flex justify-center">
-        <app-register class="w-full"/>
+        <app-register class="w-full"
+        (cancelRegister)="showRegisterMode($event)"
+        />
         </div>
     }
 </div>

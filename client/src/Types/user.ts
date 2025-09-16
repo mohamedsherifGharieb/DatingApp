@@ -5,7 +5,7 @@ export type User = {
     email : string; 
     imageUrl? : string;
 }
-export type LoginCrds ={
+export type LoginCreds ={
     email: string;
     password: string;
 }
