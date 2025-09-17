@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API.Entities;
 
@@ -24,8 +25,10 @@ public class Member
 
     //Navigation Property
     [ForeignKey(nameof(Id))]
+    [JsonIgnore]
     public AppUser User { get; set; } = null!;
 
-//nav property
+    //nav property
+    [JsonIgnore]// to ingore it while receving the response
     public List<Photo> Photos { get; set; } = [];
 }
