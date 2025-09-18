@@ -13,6 +13,7 @@ public static class AppUserExtensions // to extend the AppUser class functionali
             Id = user.Id,
             DisplayName = user.DisplayName,
             Email = user.Email,
+            ImageUrl = user.ImageUrl,
             Token = tokenService.CreateToken(user)
         };
     }
