@@ -6,7 +6,7 @@ namespace API.Entities;
 
 public class Member
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public DateOnly DateOfBirth { get; set; }
 
     public string? ImageUrl { get; set; }

@@ -14,7 +14,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if (error) {
         switch (error.status) {
           case 400:
-            if (error.error && error.error.errors) {
+            if (error.error.errors) {
               const modelStateError = [];
               for (const key in error.error.errors) {
                 if (error.error.errors[key]) {
