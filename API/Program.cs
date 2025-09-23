@@ -23,6 +23,7 @@ builder.Services.AddScoped<IMemberRepository, MemberRepository>(); //
 builder.Services.AddScoped<ITokenService, TokenService>(); // a token disposable per request
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<LogUserActivity>();
+builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {

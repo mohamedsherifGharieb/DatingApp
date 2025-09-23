@@ -8,7 +8,7 @@ import { FiltersModal } from '../filters-modal/filters-modal';
 
 @Component({
   selector: 'app-member-list',
-  imports: [MemberCard, Paginator, FiltersModal],
+imports: [MemberCard, Paginator, FiltersModal],
   templateUrl: './member-list.html',
   styleUrl: './member-list.css'
 })

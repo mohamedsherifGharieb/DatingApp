@@ -31,4 +31,12 @@ public class Member
     //nav property
     [JsonIgnore]// to ingore it while receving the response
     public List<Photo> Photos { get; set; } = [];
+
+    [JsonIgnore]
+    public List<MemberLike> LikeByMembers { get; set; } = [];
+    
+    [JsonIgnore]
+
+    public List<MemberLike> LikedMembers { get; set; } = [];
+
 }
