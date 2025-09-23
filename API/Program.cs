@@ -1,3 +1,4 @@
+using API.Controllers;
 using API.Data;
 using API.Helpers;
 using API.Interfaces;
@@ -21,6 +22,7 @@ builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("
 builder.Services.AddScoped<IMemberRepository, MemberRepository>(); //
 builder.Services.AddScoped<ITokenService, TokenService>(); // a token disposable per request
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
     {

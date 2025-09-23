@@ -39,6 +39,7 @@ export class AccountService {
   }
   setCurrentUser(user : User){
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('filters', JSON.stringify(user));
     this.currentUser.set(user);
    }
 }
