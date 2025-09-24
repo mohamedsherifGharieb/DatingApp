@@ -1,8 +1,10 @@
 using System;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
@@ -23,14 +25,45 @@ public class MessageRepository(AppDbContext context): IMessageRepository
         return await context.Messages.FindAsync(messageId);
     }
 
-    public Task<PaginatedResult<MessageDto>> GetMessageForMember()
+    public async Task<PaginatedResult<MessageDto>> GetMessageForMember(MessageParams messageParams)
     {
-        throw new NotImplementedException();
+        var query = context.Messages
+        .OrderByDescending(x => x.MessageSend)
+        .AsQueryable();
+
+        query = messageParams.Container switch
+        {
+            "Outbox" => query.Where(x => x.SenderId == messageParams.MemberId
+            && x.SenderDeleted == false),
+            _ => query.Where(x => x.RecipientId == messageParams.MemberId
+            && x.RecipientDeleted == false)
+        };
+
+        var messageQuery = query.Select(MessageExtensions.ToDtoProjection());
+
+        return await PaginationHelper.CreateAsync(messageQuery, messageParams.PageSize, messageParams.PageNumber);
     }
 
-    public Task<IReadOnlyList<MessageDto>> GetMessageThread(string currentMemberId, string recipientId)
+    public async Task<IReadOnlyList<MessageDto>> GetMessageThread(string currentMemberId, string recipientId)
     {
-        throw new NotImplementedException();
+        await context.Messages
+        .Where(x => x.RecipientId == currentMemberId
+        && x.SenderId == recipientId & x.DateRead == null
+       )
+        .ExecuteUpdateAsync(setters => setters
+        .SetProperty(x => x.DateRead, DateTime.UtcNow));
+
+        return  await context.Messages
+        .Where(x => (x.RecipientId == currentMemberId
+        && x.SenderId == recipientId  &&
+        x.RecipientDeleted == false) ||
+        (x.SenderId == currentMemberId &&
+        x.RecipientId == recipientId && x.SenderDeleted == false
+        ))
+        .OrderBy(x => x.MessageSend)
+        .Select(MessageExtensions.ToDtoProjection())
+        .ToListAsync();
+        
     }
 
     public async Task<bool> SaveAllAsync()
