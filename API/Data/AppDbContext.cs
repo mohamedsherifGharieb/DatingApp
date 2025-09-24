@@ -11,13 +11,26 @@ namespace API.Data
         public DbSet<Member> Members { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<MemberLike> Likes { get; set; }
+        
+         public DbSet<Message> Messages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<MemberLike>().ToTable("Likes");
+            modelBuilder.Entity<Message>()
+            .HasOne(x => x.Recipient)
+            .WithMany(m => m.MessagesReceived)
+            .OnDelete(DeleteBehavior.Restrict);
             
+            modelBuilder.Entity<Message>()
+            .HasOne(x => x.Sender)
+            .WithMany(m => m.MessagesSent)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MemberLike>().ToTable("Likes");
+
             modelBuilder.Entity<MemberLike>()
             .HasKey(x => new
             { x.SourceMemberId, x.TargetMemberId });
