@@ -1,0 +1,62 @@
+<div class="h-[75vh] overflow-auto roundedbox 
+border border-base-content/5 bg-base-100 p-4">
+  <table class="table w-full table-auto border-collapse">
+    <thead class="bg-base-200">
+      <tr>
+        <th class="text-left p-3 w-1/3">Email</th>
+        <th class="text-left p-3 w-1/3">Active Roles</th>
+        <th class="text-center p-3 w-1/3">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for(user of users(); track user.id){
+        <tr class="hover:bg-base-200">
+          <td class="p-3 align-middle">{{ user.email }}</td>
+          <td class="p-3 align-middle">{{ user.roles.join(', ') }}</td>
+          <td class="p-3 text-center">
+            <button (click)="openRolesModal(user)" class="btn btn-primary btn-sm">
+              Edit roles
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<dialog #rolesModal class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">
+      Edit roles for {{ selectedUser?.email ?? '' }}
+    </h3>
+
+    <fieldset class="fieldset w-full p-4 bg-base-100 border border-base-300 rounded-box">
+      <legend class="fieldset-legend">Select roles</legend>
+
+      @for(role of availableRoles; track $index){
+        <label class="fieldset-label flex items-center gap-2">
+          <input
+            type="checkbox"
+            (change)="toggleRole($event,role)"
+            [checked]="selectedUser?.roles?.includes(role) ?? false"
+            class="checkbox"
+            [disabled]="selectedUser?.email === 'admin@test.com' && role === 'Admin'">
+          {{ role }}
+        </label>
+      }
+    </fieldset>
+
+    <div class="modal-action">
+      <button
+      (click)="updateRoles()" 
+      class="btn btn-primary">
+        Submit
+      </button>
+    </div>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button>Close</button>
+  </form>
+</dialog>
