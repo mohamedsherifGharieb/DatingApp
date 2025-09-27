@@ -30,6 +30,9 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
  if(req.method.includes('POST') && req.url.includes('/messages')){
   invalidateCache('/messages');
  }
+ if(req.method.includes('POST') && req.url.includes('/logout')){
+  cache.clear();
+ }
 
  if(req.method === 'GET'){
   const cacheResponse = cache.get(cacheKey);
@@ -37,6 +40,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     return of(cacheResponse);
   }
  }
+
 
  busyService.busy();
 

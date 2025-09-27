@@ -62,20 +62,26 @@ export class AccountService {
   }
 
   logout() {
-    localStorage.removeItem('filters')
-    this.currentUser.set(null);
-    this.likesService.ClearLikesIds();
-    this.presenceService.stopHubConnection();
+    this.http.post(this.baseUrl + 'account/logout', {},
+      { withCredentials: true }).subscribe({
+        next: () => {
+          localStorage.removeItem('filters')
+          this.currentUser.set(null);
+          this.likesService.ClearLikesIds();
+          this.presenceService.stopHubConnection();
+
+        }
+      })
   }
   setCurrentUser(user: User) {
     user.roles = this.getRolesFromToken(user)
     this.currentUser.set(user);
     this.likesService.getLikesIds();
-    
-    if(this.presenceService.hubConnection?.state !==
-      HubConnectionState.Connected){
-        this.presenceService.createHubConnection(user);
-      }
+
+    if (this.presenceService.hubConnection?.state !==
+      HubConnectionState.Connected) {
+      this.presenceService.createHubConnection(user);
+    }
   }
 
   private getRolesFromToken(user: User): string[] {

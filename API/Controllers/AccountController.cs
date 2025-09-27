@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -72,14 +73,14 @@ namespace API.Controllers
 
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken
             == refreshToken && x.RefreshTokenExpiry > DateTime.UtcNow);
-           
+
             if (user == null) return Unauthorized();
 
             await SetRefreshTokenCookie(user);
 
             return await user.ToUserDto(tokenService);
         }
- private async Task SetRefreshTokenCookie(AppUser user)
+        private async Task SetRefreshTokenCookie(AppUser user)
         {
 
             var refreshToken = tokenService.GenerateRefreshToken();
@@ -96,6 +97,17 @@ namespace API.Controllers
             };
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            await userManager.Users.Where(x => x.Id ==
+            User.GetMemberId()).ExecuteUpdateAsync(setters =>
+            setters.SetProperty(x => x.RefreshToken, _ => null)
+            .SetProperty(x => x.RefreshTokenExpiry, _ => null));
+            Response.Cookies.Delete("refreshToken");
+            return Ok();
+        }
     }
-    
 }
