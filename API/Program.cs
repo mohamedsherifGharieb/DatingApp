@@ -23,12 +23,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 });
 builder.Services.AddCors();
 builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("CloudinarySetting"));
-builder.Services.AddScoped<IMemberRepository, MemberRepository>(); //
 builder.Services.AddScoped<ITokenService, TokenService>(); // a token disposable per request
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<LogUserActivity>();
-builder.Services.AddScoped<ILikesRepository, LikesRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<PresenceTracker>();
 builder.Services.AddScoped<MessageHub>();

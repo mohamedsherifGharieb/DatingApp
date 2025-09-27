@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API;
 
-public class LikesController(ILikesRepository likesRepository) : BaseApiController
+public class LikesController(IUnitOfWork unitOfWork) : BaseApiController
 {
     [HttpPost("{targetMemberId}")]
     public async Task<ActionResult> ToggleLike(string targetMemberId)
@@ -17,7 +17,7 @@ public class LikesController(ILikesRepository likesRepository) : BaseApiControll
 
         if (sourceMemberId == targetMemberId) return BadRequest("You cannot Like Yourself");
 
-        var existingLike = await likesRepository.GetMemberLike(sourceMemberId, targetMemberId);
+        var existingLike = await unitOfWork.LikesRepository.GetMemberLike(sourceMemberId, targetMemberId);
 
         if (existingLike == null)
         {
@@ -27,26 +27,26 @@ public class LikesController(ILikesRepository likesRepository) : BaseApiControll
                 TargetMemberId = targetMemberId
             };
 
-            likesRepository.AddLike(like);
+            unitOfWork.LikesRepository.AddLike(like);
         }
         else
         {
-            likesRepository.Delete(existingLike);
+            unitOfWork.LikesRepository.Delete(existingLike);
         }
-        if (await likesRepository.SaveAllChanges()) return Ok();
+        if (await unitOfWork.Complete()) return Ok();
         return BadRequest("Failed to Update Like");
     }
 
     [HttpGet("lists")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetCurrentMemberLikeIds()
     {
-        return Ok(await likesRepository.GetCurrentLikeIds(User.GetMemberId()));
+        return Ok(await unitOfWork.LikesRepository.GetCurrentLikeIds(User.GetMemberId()));
     }
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<Member>>> GetMemberLikes([FromQuery] LikesParams likesParams)
     {
         likesParams.MemberId = User.GetMemberId();
-        var members = await likesRepository.GetMembersLikes(likesParams);
+        var members = await unitOfWork.LikesRepository.GetMembersLikes(likesParams);
         return Ok(members);
 
     }
