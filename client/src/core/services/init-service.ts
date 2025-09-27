@@ -16,5 +16,6 @@ export class InitService {
         this.accountService.startRefreshIntervel();
       })
     )
-  }
+  } 
 }
+   

@@ -3,6 +3,7 @@ import { Member } from '../../../Types/member';
 import { RouterLink } from '@angular/router';
 import { AgePipe } from '../../../core/pipes/age-pipe';
 import { LikesServices } from '../../../core/services/likes-services';
+import { PresenceService } from '../../../core/services/presence-service';
 
 @Component({
   selector: 'app-member-card',
@@ -13,6 +14,11 @@ import { LikesServices } from '../../../core/services/likes-services';
 export class MemberCard{
   private likeService = inject(LikesServices);
   member = input.required<Member>();
+  private presenceService = inject(PresenceService);
+protected isOnline = computed(
+    () => this.presenceService
+    .onlineUser().includes(this.member().id)
+  )
   protected hasLiked = computed(
     () => this.likeService
     .likeIds().includes(this.member().id)
