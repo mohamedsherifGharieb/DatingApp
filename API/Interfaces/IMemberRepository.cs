@@ -1,7 +1,6 @@
 using System;
 using API.Entities;
 using API.Helpers;
-using SQLitePCL;
 
 namespace API.Interfaces;
 

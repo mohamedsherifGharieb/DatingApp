@@ -1,1 +1,4 @@
-{}
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/37e4b7dd-ae3d-4ca8-bd9d-63500c7eb51b/resourceGroups/da-2025-rg/providers/Microsoft.Web/sites/LoveIsland",
+    "appService.deploySubpath": "API\\bin\\Publish"
+}
