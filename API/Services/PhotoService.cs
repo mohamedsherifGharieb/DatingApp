@@ -12,9 +12,6 @@ public class PhotoService : IPhotoService
 
     public PhotoService(IOptions<CloudinarySetting> config)
 {
-    Console.WriteLine($"CloudName: {config.Value.CloudName}");
-    Console.WriteLine($"ApiKey: {config.Value.ApiKey}");
-    Console.WriteLine($"ApiSecret: {config.Value.ApiSecret}");
 
     var account = new Account(
         config.Value.CloudName,
@@ -45,7 +42,7 @@ public class PhotoService : IPhotoService
                 Folder = "DatingApp"
             };
             uploadResult = await _cloudinary.UploadAsync(uploadParam);
-
+    
         }
          return uploadResult;
 
