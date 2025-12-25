@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-         node-version: '22'
+          node-version: '22'
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli@20
@@ -65,9 +65,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7C0F29BD03E24E9EA91ECEE9DB51B55F }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F664C38B22334CE38DA0CAAD9E90322B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_804FC851917344F38292380C6E8E4649 }}
+          client-id: a0118162-6068-4810-bca6-debb253c862a
+          tenant-id: 07940c1d-2052-42ea-8d36-4402c6b00e89
+          subscription-id: f6d25c74-d91d-45c3-8388-1bb1817663d8
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -76,4 +76,3 @@ jobs:
           app-name: 'DatingProject'
           slot-name: 'Production'
           package: .
-          
