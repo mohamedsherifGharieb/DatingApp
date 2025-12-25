@@ -9,12 +9,12 @@
             </svg>
 
             <h1 class="text-5xl font-bold">Find Your Match</h1>
-            💡 <strong>Pro tip:</strong> Use the demo account to explore the app<br>
+            <p class="py-6">
+            <strong>Pro tip:</strong> Use the demo account to explore the app<br>
             <span class="text-sm">
                 Email: <strong>lisa@test.com</strong> <br>
                 Password: <strong>Pa$$w0rd</strong>
-            </span>
-            </p>
+            </span></p>
             <div class="flex items-center gap-4">
                 @if(!accountService.currentUser()){
                 <button (click)="showRegisterMode(true)" class="btn btn-primary btn-lg">Register </button>
